@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum PaperStatus {
+  GENERATING
+  COMPLETED
+  FAILED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  fatherName   String
+  cnic         String   @unique
+  profileImage String?
+  role         Role     @default(STUDENT)
+  isSuspended  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  papers        GeneratedPaper[]
+  savedPapers   SavedPaper[]
+  notifications Notification[]
+  activities    ActivityLog[]
+}
+
+model University {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  city      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  courses Course[]
+  papers  GeneratedPaper[]
+}
+
+model Course {
+  id           String @id @default(cuid())
+  name         String
+  slug         String
+  universityId String
+
+  university University       @relation(fields: [universityId], references: [id], onDelete: Cascade)
+  papers     GeneratedPaper[]
+
+  @@unique([universityId, slug])
+  @@index([universityId])
+}
+
+model GeneratedPaper {
+  id           String      @id @default(cuid())
+  userId       String
+  universityId String
+  courseId     String
+  title        String
+  content      Json
+  promptUsed   String?
+  status       PaperStatus @default(COMPLETED)
+  createdAt    DateTime    @default(now())
+
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  university University   @relation(fields: [universityId], references: [id])
+  course     Course       @relation(fields: [courseId], references: [id])
+  savedBy    SavedPaper[]
+
+  @@index([userId, createdAt])
+}
+
+model SavedPaper {
+  id        String   @id @default(cuid())
+  userId    String
+  paperId   String
+  folder    String?
+  createdAt DateTime @default(now())
+
+  user  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  paper GeneratedPaper @relation(fields: [paperId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, paperId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model AiPromptTemplate {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  template  String   @db.Text
+  isActive  Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
