@@ -67,7 +67,7 @@ export async function POST(
 
   const text = paperToText(
     paper.title,
-    paper.content as GuessPaperContent
+    paper.content as unknown as GuessPaperContent
   );
 
   return new NextResponse(text, {

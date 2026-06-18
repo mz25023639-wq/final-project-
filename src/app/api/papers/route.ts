@@ -66,7 +66,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       id: paper.id,
       title: paper.title,
-      content: paper.content as GuessPaperContent,
+      content: paper.content as unknown as GuessPaperContent,
       createdAt: paper.createdAt,
       university: paper.university,
       course: paper.course,
