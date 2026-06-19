@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     where: {
       universityId,
       ...(search
-        ? { name: { contains: search, mode: "insensitive" } }
+        ? { name: { contains: search } }
         : {}),
     },
     orderBy: { name: "asc" },

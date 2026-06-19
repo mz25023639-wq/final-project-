@@ -89,7 +89,7 @@ export async function GET(req: Request) {
     where: {
       userId: session.user.id,
       ...(search
-        ? { title: { contains: search, mode: "insensitive" } }
+        ? { title: { contains: search } }
         : {}),
     },
     orderBy: { createdAt: "desc" },

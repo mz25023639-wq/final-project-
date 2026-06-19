@@ -11,8 +11,8 @@ export async function GET(req: Request) {
       ...(search
         ? {
             OR: [
-              { name: { contains: search, mode: "insensitive" } },
-              { city: { contains: search, mode: "insensitive" } },
+              { name: { contains: search } },
+              { city: { contains: search } },
             ],
           }
         : {}),

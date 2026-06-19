@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -122,7 +122,7 @@ model ActivityLog {
 model AiPromptTemplate {
   id        String   @id @default(cuid())
   name      String   @unique
-  template  String   @db.Text
+  template  String
   isActive  Boolean  @default(true)
   updatedAt DateTime @updatedAt
 }
