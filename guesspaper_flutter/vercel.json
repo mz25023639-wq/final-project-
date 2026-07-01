@@ -1,0 +1,5 @@
+{
+  "buildCommand": "./.flutter/bin/flutter config --enable-web && ./.flutter/bin/flutter pub get && ./.flutter/bin/flutter build web --release --dart-define=API_BASE_URL=https://university-guess-paper.vercel.app",
+  "outputDirectory": "build/web",
+  "installCommand": "git clone --depth 1 -b stable https://github.com/flutter/flutter.git .flutter"
+}

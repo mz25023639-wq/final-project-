@@ -1,0 +1,11 @@
+{
+  "name": "GuessPaper AI",
+  "short_name": "GuessPaper AI",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#6366f1",
+  "description": "AI-powered university guess paper generator",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false
+}
