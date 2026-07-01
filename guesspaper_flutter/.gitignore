@@ -11,3 +11,5 @@ android/app/build/
 ios/Pods/
 ios/Flutter/Flutter.framework
 ios/Flutter/Flutter.podspec
+
+.vercel
